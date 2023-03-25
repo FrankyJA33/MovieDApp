@@ -8,12 +8,13 @@ const api = axios.create({
     },
 });
 
-const getTrendingMoviePreview = async () => {
-    const { data } = await api.get('/trending/movie/day');
+// En esta clase se encuentra getTrendingMoviePreview y getMovieByCategory
+const getMBCTMP = async (Element,url) => {
+    const { data } = await api.get(url); // En navigation.js esta la url
     const movies = data.results;
-    trendingMoviesPreviewList.innerHTML = '';
+    Element.innerHTML = '';
     movies.forEach(element => {
-        trendingMoviesPreviewList.innerHTML += `
+        Element.innerHTML += `
             <div class="movie-container">
                 <img src="https://image.tmdb.org/t/p/w300${element.poster_path}" alt="${element.title}" class="movie-img">
             </div>
@@ -38,19 +39,3 @@ const onClickCategories = (id, name) => {
     location.hash = `#category=${id}-${name}`;
     categoryPage();
 }
-
-const getMovieByCategory = async (id) => {
-    const { data } = await api.get(`/discover/movie?with_genres=${id}`);
-    const movies = data.results;
-    genericSection.innerHTML = '';
-    movies.forEach(element => {
-        genericSection.innerHTML += `
-            <div class="movie-container">
-                <img src="https://image.tmdb.org/t/p/w300${element.poster_path}" alt="${element.title}" class="movie-img">
-            </div>
-        `;
-    });
-}
-
-
-

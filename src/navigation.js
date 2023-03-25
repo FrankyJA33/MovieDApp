@@ -32,7 +32,7 @@ const homePage = () => {
     genericSection.classList.add('inactive');
     movieDetailSection.classList.add('inactive');
 
-    getTrendingMoviePreview();
+    getMBCTMP(trendingMoviesPreviewList,'/trending/movie/day');
     getCategoriesPreview();
 }
 
@@ -53,7 +53,7 @@ const categoryPage = () => {
     const [category, idnc] = location.hash.split('='); // idnc = id-nameCategory
     const [id, nameCategory] = idnc.split('-');
     headerCategoryTitle.innerHTML = nameCategory
-    getMovieByCategory(id);
+    getMBCTMP(genericSection,`/discover/movie?with_genres=${id}`);
     window.scrollTo(0, 0); //* Permite mandar al usuario hasta el incion de la pagina
 }
 
