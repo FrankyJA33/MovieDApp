@@ -28,9 +28,29 @@ const getCategoriesPreview = async () => {
     categories.forEach(element => {
         categoriesPreviewList.innerHTML += `
             <div class="category-container">
-                <h3 id="id${element.id}" class="category-title">${element.name}</h3>
+            <h3 id="id${element.id}" class="category-title" onclick="onClickCategories(${element.id},'${element.name}')">${element.name}</h3>
             </div>
         `;
     });
 }
+
+const onClickCategories = (id, name) => {
+    location.hash = `#category=${id}-${name}`;
+    categoryPage();
+}
+
+const getMovieByCategory = async (id) => {
+    const { data } = await api.get(`/discover/movie?with_genres=${id}`);
+    const movies = data.results;
+    genericSection.innerHTML = '';
+    movies.forEach(element => {
+        genericSection.innerHTML += `
+            <div class="movie-container">
+                <img src="https://image.tmdb.org/t/p/w300${element.poster_path}" alt="${element.title}" class="movie-img">
+            </div>
+        `;
+    });
+}
+
+
 
