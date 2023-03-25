@@ -200,7 +200,7 @@ footer {
     width: 72px;
 }
 
-#trendingPreview-movieList {
+.trendingPreview-movieList {
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
@@ -209,12 +209,12 @@ footer {
     padding-bottom: 16px;
 }
 
-#trendingPreview-movieList .movie-container {
+.trendingPreview-movieList .movie-container {
     display: inline-block;
     margin-right: 8px;
 }
 
-#trendingPreview-movieList .movie-container .movie-img {
+.trendingPreview-movieList .movie-container .movie-img {
     height: 225px;
     min-height: 225px;
     max-height: 225px;
