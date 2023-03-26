@@ -57,4 +57,5 @@ const getMovieById = async (id) => {
     movieDetailDescription.innerHTML = data.overview;
     movieDetailScore.innerHTML = data.vote_average;
     getCategoriesPreview(`/movie/${id}`,movieDetailCategoriesList);
+    getMovies(relatedMoviesContainer,`/movie/${id}/similar`) //getRelatedMoviesById obtiene las peliculas similares o recomendadas a la pelicula seleccionada
 }
