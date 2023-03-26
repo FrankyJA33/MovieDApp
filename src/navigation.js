@@ -33,7 +33,7 @@ const homePage = () => {
     movieDetailSection.classList.add('inactive');
 
     getMovies(trendingMoviesPreviewList,'/trending/movie/day');
-    getCategoriesPreview();
+    getCategoriesPreview('/genre/movie/list',categoriesPreviewList);
 }
 
 const categoryPage = () => {
@@ -70,6 +70,9 @@ const moviehPage = () => {
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.add('inactive');
     movieDetailSection.classList.remove('inactive');
+
+    const [_, movieId] = location.hash.split('='); 
+    getMovieById(movieId);
 }
 
 const searchPage = () => {
@@ -107,6 +110,9 @@ const trendsPage = () => {
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
+
+    getMovies(genericSection,'/trending/movie/day');
+    headerCategoryTitle.innerHTML = 'Tendencias';
 }
 
 const searchPlaceholderWait = () => {

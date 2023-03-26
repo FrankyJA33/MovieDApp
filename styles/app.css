@@ -370,7 +370,7 @@ footer {
 }
 
 .movieDetail-score::before {
-    content: 'â˜…';
+    content: '⭐';
     color: var(--yellow);
     padding-right: 4px;
 }
