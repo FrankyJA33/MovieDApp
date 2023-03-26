@@ -9,7 +9,7 @@ const api = axios.create({
 });
 
 // En esta clase se encuentra getTrendingMoviePreview y getMovieByCategory
-const getMBCTMP = async (Element,url) => {
+const getMovies = async (Element,url) => {
     const { data } = await api.get(url); // En navigation.js esta la url
     const movies = data.results;
     Element.innerHTML = '';

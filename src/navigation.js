@@ -32,7 +32,7 @@ const homePage = () => {
     genericSection.classList.add('inactive');
     movieDetailSection.classList.add('inactive');
 
-    getMBCTMP(trendingMoviesPreviewList,'/trending/movie/day');
+    getMovies(trendingMoviesPreviewList,'/trending/movie/day');
     getCategoriesPreview();
 }
 
@@ -50,10 +50,10 @@ const categoryPage = () => {
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
 
-    const [category, idnc] = location.hash.split('='); // idnc = id-nameCategory
+    const [poster_path, idnc] = location.hash.split('='); // idnc = id-nameCategory
     const [id, nameCategory] = idnc.split('-');
     headerCategoryTitle.innerHTML = nameCategory
-    getMBCTMP(genericSection,`/discover/movie?with_genres=${id}`);
+    getMovies(genericSection,`/discover/movie?with_genres=${id}`);
     window.scrollTo(0, 0); //* Permite mandar al usuario hasta el incion de la pagina
 }
 
@@ -78,13 +78,20 @@ const searchPage = () => {
     arrowBtn.classList.remove('inactive');
     arrowBtn.classList.remove('header-arrow--white');
     headerTitle.classList.add('inactive');
-    headerCategoryTitle.classList.remove('inactive');
+    headerCategoryTitle.classList.add('inactive');
     searchForm.classList.remove('inactive');
 
     trendingPreviewSection.classList.add('inactive');
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
+
+    const [_, query] = location.hash.split('=');
+    getMovies(genericSection,`/search/movie?query=${query}`);
+
+    if(historial.length != 0){
+        searchPlaceholderWait();
+    }
 }
 
 const trendsPage = () => {
@@ -102,9 +109,17 @@ const trendsPage = () => {
     movieDetailSection.classList.add('inactive');
 }
 
+const searchPlaceholderWait = () => {
+    setTimeout(() => {
+        searchFormInput.value = '';
+        searchFormInput.setAttribute('placeholder', historial[historial.length-1]);
+    },2000);
+}
 
+const historial = []; // Tambien podemos hacer el historial con history.back()
 searchFormBtn.addEventListener('click', () => {
-    location.hash = '#search=';
+    location.hash = `#search=${searchFormInput.value}`;
+    historial.push(searchFormInput.value);
     navigation()
 });
 trendingBtn.addEventListener('click', () => {
@@ -112,9 +127,20 @@ trendingBtn.addEventListener('click', () => {
     navigation()
 });
 arrowBtn.addEventListener('click', () => {
-    location.hash = '#home';
+    if(historial.length == 0){
+        location.hash = '#home';
+    }else if(historial.length == 1){
+        location.hash = '#home';
+        searchFormInput.value = '';
+        searchFormInput.setAttribute('placeholder', 'Buscar');
+        historial.pop();
+    }else{
+        location.hash = `#search=${historial[historial.length-2]}`;
+        searchFormInput.value = '';
+        searchFormInput.setAttribute('placeholder', historial[historial.length-2]);
+        historial.pop();
+    }
     navigation()
 });
 window.addEventListener('DOMContentLoaded', navigation());
 window.addEventListener('hashchange', navigation());
-
