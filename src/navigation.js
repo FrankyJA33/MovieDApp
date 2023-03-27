@@ -32,7 +32,7 @@ const homePage = () => {
     genericSection.classList.add('inactive');
     movieDetailSection.classList.add('inactive');
 
-    getMovies(trendingMoviesPreviewList,'/trending/movie/day',1);
+    getMovies(trendingMoviesPreviewList,'/trending/movie/day',{lazyLoad:1});
     getCategoriesPreview('/genre/movie/list',categoriesPreviewList);
 }
 
@@ -53,7 +53,7 @@ const categoryPage = () => {
     const [poster_path, idnc] = location.hash.split('='); // idnc = id-nameCategory
     const [id, nameCategory] = idnc.split('-');
     headerCategoryTitle.innerHTML = nameCategory
-    getMovies(genericSection,`/discover/movie?with_genres=${id}`);
+    getMovies(genericSection,`/discover/movie?with_genres=${id}`,{lazyLoad:1});
     window.scrollTo(0, 0); //* Permite mandar al usuario hasta el incion de la pagina
 }
 
@@ -90,7 +90,7 @@ const searchPage = () => {
     movieDetailSection.classList.add('inactive');
 
     const [_, query] = location.hash.split('=');
-    getMovies(genericSection,`/search/movie?query=${query}`,1);
+    getMovies(genericSection,`/search/movie?query=${query}`,{lazyLoad:1});
 
     if(historial.length != 0){
         searchPlaceholderWait();
@@ -111,8 +111,8 @@ const trendsPage = () => {
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
 
-    getMovies(genericSection,'/trending/movie/day',1);
     headerCategoryTitle.innerHTML = 'Tendencias';
+    getMovies(genericSection,'/trending/movie/day',{lazyLoad:1});
 }
 
 const searchPlaceholderWait = () => {

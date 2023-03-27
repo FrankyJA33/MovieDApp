@@ -8,13 +8,22 @@ const api = axios.create({
     },
 });
 
+const btnLoadMore = document.createElement('button');
 // En esta clase se encuentra getTrendingMoviePreview y getMovieByCategory
-const getMovies = async (container,url,lazyLoad=false) => {
+const getMovies = async (
+    container,
+    url,
+    {
+        lazyLoad=false, 
+        clean=true
+    }={}) => {
     const { data } = await api.get(url); // En navigation.js esta la url
     const movies = data.results;
-    container.innerHTML = '';
+    if(clean){
+        container.innerHTML = '';
+    }
     movies.forEach(movie => {
-        // container.innerHTML += `
+            // container.innerHTML += `
         //     <div class="movie-container" onclick="detailMovie(${movie.id})">
         //         <img data-img="https://image.tmdb.org/t/p/w300${movie.poster_path}" alt="${movie.title}" class="movie-img">
                 
@@ -33,6 +42,9 @@ const getMovies = async (container,url,lazyLoad=false) => {
         movieImg.setAttribute(lazyLoad ? 'data-img' : 'src',
             `https://image.tmdb.org/t/p/w300${movie.poster_path}`
         );
+        movieImg.addEventListener('error', () => {
+            movieImg.setAttribute('src', 'https://thumbs.dreamstime.com/b/error-concept-white-background-sign-logo-icon-error-concept-simple-vector-icon-123196424.jpg')
+        });
 
         if(lazyLoad){
             lazyLoader.observe(movieImg);
@@ -41,6 +53,9 @@ const getMovies = async (container,url,lazyLoad=false) => {
         movieContainer.appendChild(movieImg);
         container.appendChild(movieContainer);
     });
+    
+    btnLoadMore.innerText = 'Cargar mas';
+    genericSection.appendChild(btnLoadMore);
 }
 
 const getCategoriesPreview = async (url,container) => {
@@ -98,4 +113,10 @@ const lazyLoader = new IntersectionObserver((entries) => {
             entry.target.setAttribute('src', url);
         }
     });
+});
+
+let page = 1
+btnLoadMore.addEventListener('click', () => {
+    getMovies(genericSection,`/trending/movie/day?page=${page}`,{lazyLoad:1,clean:0});
+    page++;
 });
