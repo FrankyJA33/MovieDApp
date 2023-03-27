@@ -32,7 +32,7 @@ const homePage = () => {
     genericSection.classList.add('inactive');
     movieDetailSection.classList.add('inactive');
 
-    getMovies(trendingMoviesPreviewList,'/trending/movie/day');
+    getMovies(trendingMoviesPreviewList,'/trending/movie/day',1);
     getCategoriesPreview('/genre/movie/list',categoriesPreviewList);
 }
 
@@ -90,7 +90,7 @@ const searchPage = () => {
     movieDetailSection.classList.add('inactive');
 
     const [_, query] = location.hash.split('=');
-    getMovies(genericSection,`/search/movie?query=${query}`);
+    getMovies(genericSection,`/search/movie?query=${query}`,1);
 
     if(historial.length != 0){
         searchPlaceholderWait();
@@ -111,7 +111,7 @@ const trendsPage = () => {
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
 
-    getMovies(genericSection,'/trending/movie/day');
+    getMovies(genericSection,'/trending/movie/day',1);
     headerCategoryTitle.innerHTML = 'Tendencias';
 }
 
