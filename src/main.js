@@ -8,7 +8,6 @@ const api = axios.create({
     },
 });
 
-const btnLoadMore = document.createElement('button');
 // En esta clase se encuentra getTrendingMoviePreview y getMovieByCategory
 const getMovies = async (
     container,
@@ -19,6 +18,7 @@ const getMovies = async (
     }={}) => {
     const { data } = await api.get(url); // En navigation.js esta la url
     const movies = data.results;
+    maxPage = data.total_pages;
     if(clean){
         container.innerHTML = '';
     }
@@ -53,9 +53,6 @@ const getMovies = async (
         movieContainer.appendChild(movieImg);
         container.appendChild(movieContainer);
     });
-    
-    btnLoadMore.innerText = 'Cargar mas';
-    genericSection.appendChild(btnLoadMore);
 }
 
 const getCategoriesPreview = async (url,container) => {
@@ -113,10 +110,4 @@ const lazyLoader = new IntersectionObserver((entries) => {
             entry.target.setAttribute('src', url);
         }
     });
-});
-
-let page = 1
-btnLoadMore.addEventListener('click', () => {
-    getMovies(genericSection,`/trending/movie/day?page=${page}`,{lazyLoad:1,clean:0});
-    page++;
 });

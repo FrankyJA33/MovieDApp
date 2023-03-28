@@ -150,3 +150,21 @@ arrowBtn.addEventListener('click', () => {
 });
 window.addEventListener('DOMContentLoaded', navigation());
 window.addEventListener('hashchange', navigation());
+
+let maxPage;
+let page = 1
+window.addEventListener('scroll', () => {
+    const {
+        scrollTop, 
+        scrollHeight, 
+        clientHeight
+    } = document.documentElement;
+
+    const isNotMaxPage = page < maxPage;
+    const isScrollBotton = (scrollTop + clientHeight) >= (scrollHeight - 15);
+
+    if(isScrollBotton && isNotMaxPage){
+        getMovies(genericSection,`/trending/movie/day?page=${page}`,{lazyLoad:1,clean:0});
+        page++;
+    }
+});
