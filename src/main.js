@@ -8,6 +8,30 @@ const api = axios.create({
     },
 });
 
+//* USO DE LOCALSTORAGE
+function likedMoviesListf(){ //Funcion que se referira a las pelicualas ya guardadas
+    const item = JSON.parse(localStorage.getItem('liked_movies'));
+    let movies;
+
+    if(item){
+        movies = item
+    }else{
+        movies = {};
+    }
+    return movies;
+}
+
+function likeMovie(movie){
+    const likedMovies = likedMoviesListf();
+
+    if(likedMovies[movie.id]){
+        likedMovies[movie.id] = undefined;
+    }else{
+        likedMovies[movie.id] = movie;
+    }
+    localStorage.setItem('liked_movies',JSON.stringify(likedMovies)); //Toso lo que se sube a localStorage se tiene que embiar como stringify
+}
+
 // En esta clase se encuentra getTrendingMoviePreview y getMovieByCategory
 const getMovies = async (
     container,
@@ -19,6 +43,16 @@ const getMovies = async (
     const { data } = await api.get(url); // En navigation.js esta la url
     const movies = data.results;
     maxPage = data.total_pages;
+    createMovie(movies,container,{lazyLoad,clean});
+}
+
+const createMovie = (
+    movies,
+    container,
+    {
+        lazyLoad=false,
+        clean=true
+    }={}) => {
     if(clean){
         container.innerHTML = '';
     }
@@ -48,9 +82,11 @@ const getMovies = async (
 
         const movieBtn = document.createElement('button');
         movieBtn.classList.add('movie-btn');
+        likedMoviesListf()[movie.id] && movieBtn.classList.add('movie-btn--liked'); // el && significa un "entonces"
         movieBtn.addEventListener('click', () => {
-            //DEBERIAMOS AGREGAR LA PELICULA A LOCAR STORAGE
             movieBtn.classList.toggle('movie-btn--liked');
+            likeMovie(movie);
+            getLikedMovies();
         });
 
         if(lazyLoad){
@@ -119,3 +155,12 @@ const lazyLoader = new IntersectionObserver((entries) => {
         }
     });
 });
+
+//* Consumuendo el localStorage para cargar la parte de favoritos
+const getLikedMovies = () => {
+    const likedMovies = likedMoviesListf();
+// {keys: 'values',keys: 'values',keys: 'values',keys: 'values'}
+// con O.v = [keys: 'values'],[keys: 'values'],[keys: 'values'],[keys: 'values']
+    const moviesArray = Object.values(likedMovies);
+    createMovie(moviesArray, likedMoviesList,{lazyLoad:1,clean:1});
+}

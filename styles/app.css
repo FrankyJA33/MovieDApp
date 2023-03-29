@@ -269,7 +269,7 @@ footer {
 }
 
 .trendingPreview-movieList,
-.liked-movieList {
+.liked-moviesList {
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
@@ -279,13 +279,13 @@ footer {
 }
 
 .trendingPreview-movieList .movie-container,
-.liked-movieList .movie-container {
+.liked-moviesList .movie-container {
     display: inline-block;
     margin-right: 8px;
 }
 
 .trendingPreview-movieList .movie-container .movie-img,
-.liked-movieList .movie-container .movie-img {
+.liked-moviesList .movie-container .movie-img {
     height: 225px;
     min-height: 225px;
     max-height: 225px;
